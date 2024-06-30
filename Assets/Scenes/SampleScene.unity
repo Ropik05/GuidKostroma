@@ -1542,7 +1542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42b1a5afac6492b47b481b31f68b4dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaneMarkerPrefab: {fileID: 0}
   ARCamera: {fileID: 223974226}
   EkatDoll: {fileID: 4770481941770581895, guid: 3c44be7546bb82a4bbd02adc6ef400a4, type: 3}
   DollPos: {fileID: 1973054523}
@@ -2044,7 +2043,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2292,7 +2291,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -252, y: 711}
+  m_AnchoredPosition: {x: -252, y: 11}
   m_SizeDelta: {x: 230, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1703433240
