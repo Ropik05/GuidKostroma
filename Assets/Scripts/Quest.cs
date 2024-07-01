@@ -10,7 +10,8 @@ namespace Assets.Scripts
     public class Quest : MonoBehaviour
     {
         //
-        List<QuestPoint> points = new() { };
+
+        List<QuestPoint> points;
         int CurrentPos = 0;
 
         void work()
@@ -19,7 +20,7 @@ namespace Assets.Scripts
             player.source = new();
             for (; CurrentPos < points.Count; CurrentPos++)
             {
-
+                //Здесь для каждой точки маршрута вызываем проигрыш аудио и воспроизведение анимации персонажа
             }
         }
         // Use this for initialization
@@ -33,9 +34,6 @@ namespace Assets.Scripts
         {
 
         }
-        /// <summary>
-        /// Воспроизводит анимациюи реплику
-        /// </summary>
     }
     public class QuestPoint
     {
@@ -46,10 +44,10 @@ namespace Assets.Scripts
         public double Y;
 
         //Список анимаций персонажа. скорее всего пути к ним или хз
-        public List<string> animations;
+        public List<string> FrameSources;
 
         //Список звуковых дорожек, которые воспроизводятся
-        public string message;
+        public string AudioSource;
 
         /// <summary>
         /// Проверяет положение игрока относительно точки квеста
@@ -62,15 +60,7 @@ namespace Assets.Scripts
         {
             return math.abs(x - X) < e && math.abs(y - Y) < e;
         }
-        void Start()
-        {
-            PlayAnimations();
-        }
         public void PlayAnimations()
-        {
-
-        }
-        public void PlayMessage()
         {
 
         }
