@@ -11,6 +11,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+<<<<<<< Updated upstream
+=======
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: a23696d4cad06b54ab8d7b7927a8578d
+  - enabled: 1
+    path: Assets/Scenes/Quest2.unity
+    guid: 72eb6ccf7927bbf43b6bbdd2f1a82ca1
+>>>>>>> Stashed changes
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 5cde3adee37915c4b95e0c9c5f1de041, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 85f3eb8f3a4d20f4c8de0a770d4787cb, type: 2}

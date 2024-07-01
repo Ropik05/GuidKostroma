@@ -17,4 +17,17 @@ public class NextLevelTrans : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+<<<<<<< Updated upstream:Assets/Scripts/NextLevelTrans.cs
+=======
+
+    public void changeSceneBackMap()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+    }
+
+    public void changeSceneMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+>>>>>>> Stashed changes:Assets/Scripts/NextLevelTrans1.cs
 }
