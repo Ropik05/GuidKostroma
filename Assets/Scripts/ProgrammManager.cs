@@ -1,47 +1,85 @@
+using NUnit.Framework.Internal.Execution;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class ProgrammManager : MonoBehaviour
+public class DollControl : MonoBehaviour
 {
 
     public GameObject ARCamera;
 
+    [SerializeField] private Camera ArCamera;
+
+    public GameObject Button;
+
     private ARRaycastManager ARRaycastManagerScript;
+    public GameObject PlaneMarker;
 
     private Vector2 TouchPosition;
 
-    public GameObject EkatDoll;
+    public GameObject VideoPlane;
 
-    private GameObject GameDoll;
+    public GameObject CollectItem;
 
-    public Transform DollPos;
+    private GameObject GameVideo;
+
+    public static Transform VideoPoss;
+
+    public static byte GameMode = 0;
     void Start()
     {
-        GameDoll = Instantiate(EkatDoll, ARCamera.transform.position + new Vector3(1f, 0, 0), ARCamera.transform.rotation);
+        PlaneMarker.SetActive(false);
+        ARRaycastManagerScript = FindObjectOfType<ARRaycastManager>();
+        Button.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //ShowMarker();
-        if(CheckDist() >= 0.3f)
+        List<ARRaycastHit> hits = new List<ARRaycastHit>();
+        ARRaycastManagerScript.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
+        if (hits.Count > 0)
         {
-            MoveObjectTo();
+            PlaneMarker.transform.position = hits[0].pose.position;
+            PlaneMarker.SetActive(true);
+            if (GameMode == 0)
+            {
+                Button.SetActive(true);
+            }
+        }
+        if (GameMode == 1)
+        {
+            GameVideo = Instantiate(VideoPlane, hits[0].pose.position, ArCamera.transform.rotation);
+            GameMode++;
+        }
+        VideoPoss = ARCamera.transform;
+        TouchCollectItem();
+
+    }
+
+    void TouchCollectItem()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            TouchPosition = touch.position;
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = ArCamera.ScreenPointToRay(touch.position);
+                RaycastHit hitObject;
+                if (Physics.Raycast(ray, out hitObject))
+                {
+                    if (hitObject.collider.CompareTag("UnTouch"))
+                    {
+                        hitObject.collider.gameObject.tag = "Touch";
+                    }
+                }
+            }
         }
 
-        GameDoll.transform.LookAt(ARCamera.transform);
 
-    }
-    private float CheckDist()
-    {
-        float dist = Vector3.Distance(GameDoll.transform.position,DollPos.transform.position);
-        return dist;
-    }
-    private void MoveObjectTo()
-    {
-        GameDoll.transform.position = Vector3.Lerp(GameDoll.transform.position, DollPos.position,1f* Time.deltaTime);
     }
 }
