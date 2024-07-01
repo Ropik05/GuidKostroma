@@ -1,14 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace Assets.Scripts
 {
     public class Quest : MonoBehaviour
     {
         //
-        List<QuestPoint> points = new List<QuestPoint>();
+        List<QuestPoint> points = new() { };
+        int CurrentPos = 0;
+
+        void work()
+        {
+            VideoPlayer player = GetComponent<VideoPlayer>();
+            player.source = new();
+            for (; CurrentPos < points.Count; CurrentPos++)
+            {
+
+            }
+        }
         // Use this for initialization
         void Start()
         {
@@ -48,6 +61,10 @@ namespace Assets.Scripts
         public bool CheckLocation(double x, double y, double e)
         {
             return math.abs(x - X) < e && math.abs(y - Y) < e;
+        }
+        void Start()
+        {
+            PlayAnimations();
         }
         public void PlayAnimations()
         {
