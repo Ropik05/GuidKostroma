@@ -1,0 +1,5 @@
+G:/KGU/intensiv/GuidKostroma/.utmp/RelWithDebInfo/5u2i184f/armeabi-v7a/CMakeFiles/edit_cache.dir
+G:/KGU/intensiv/GuidKostroma/.utmp/RelWithDebInfo/5u2i184f/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+G:/KGU/intensiv/GuidKostroma/.utmp/RelWithDebInfo/5u2i184f/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+G:/KGU/intensiv/GuidKostroma/.utmp/RelWithDebInfo/5u2i184f/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+G:/KGU/intensiv/GuidKostroma/.utmp/RelWithDebInfo/5u2i184f/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir

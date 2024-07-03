@@ -2,33 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyObject : MonoBehaviour
+namespace Assets.Scripts
 {
-    public UnityEngine.Video.VideoPlayer player;
-
-    public GameObject CollectItem;
-    // Start is called before the first frame update
-    void Start()
+    public class DestroyObject : MonoBehaviour
     {
+        public UnityEngine.Video.VideoPlayer player;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (player.frame > 0 && !player.isPlaying)
+        public GameObject CollectItem;
+        // Start is called before the first frame update
+        void Start()
         {
-            DollControl.GameMode++;
-            Instantiate(CollectItem, this.gameObject.transform.position + new Vector3(0,0,0.1f), DollControl.VideoPoss.rotation);
-            DoDestroy();
-        }
-       this.gameObject.transform.LookAt(DollControl.VideoPoss.position);
-        
-    }
 
-    public void DoDestroy()
-    {
-        Destroy(this.gameObject);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+            if (player.frame > 0 && !player.isPlaying)
+            {
+                DollControl.GameMode++;
+                Instantiate(CollectItem, this.gameObject.transform.position + new Vector3(0, 0, 0.1f), DollControl.VideoPoss.rotation);
+                DoDestroy();
+            }
+            this.gameObject.transform.LookAt(DollControl.VideoPoss.position);
+
+        }
+
+        public void DoDestroy()
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
