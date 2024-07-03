@@ -3500,6 +3500,7 @@ GameObject:
   - component: {fileID: 1823214668}
   - component: {fileID: 1823214672}
   - component: {fileID: 1823214673}
+  - component: {fileID: 1823214674}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3606,6 +3607,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01fa3f02f39c634fbdf0fbf8f83d2d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ARCamera: {fileID: 0}
+  ArCamera: {fileID: 0}
+  Button: {fileID: 0}
+  PlaneMarker: {fileID: 0}
+  VideoPlane: {fileID: 0}
+  CollectItem: {fileID: 0}
   CurrentPos: 0
 --- !u!114 &1823214673
 MonoBehaviour:
@@ -3619,6 +3626,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af746d305fd00749a79c6a8f11bdd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1823214674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823214667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14855db04fee84b4db9dd773095c0f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GPSStatus: 0
+  latitudeValue: 0
+  longitudeValue: 0
+  altitudeValue: 0
+  horizontalAccuracyValue: 0
+  timestampValue: 0
 --- !u!1 &1836098770
 GameObject:
   m_ObjectHideFlags: 0
