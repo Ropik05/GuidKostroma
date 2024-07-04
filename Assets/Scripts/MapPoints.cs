@@ -12,7 +12,7 @@ namespace Assets.Scripts
         public Image[] points;
         public Image[] points_green;
         public Image point_yellow;
-
+        Quest q;
 
         // Start is called before the first frame update
         void Start()
@@ -25,6 +25,7 @@ namespace Assets.Scripts
             //[40.92690099812203, 57.76790851789714]
             //[57.77031426849492, 40.93166896010112]
             //[57.76181661202863, 40.92877026474288]
+            DrawPoints(q.points);
         }
 
         void DrawPoints(List<QuestPoint> checkPoints)
