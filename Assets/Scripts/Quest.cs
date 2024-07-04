@@ -73,7 +73,7 @@ namespace Assets.Scripts
             points = new List<QuestPoint>() 
             {
                 // координаты наших мест
-                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, Completed = true},
+                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, Completed},
                 new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f},
                 new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f},
                 new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f},
@@ -126,38 +126,24 @@ namespace Assets.Scripts
                         return; 
                     }
                 case 4: // 4 - загадка
-                    { 
-                        return; 
+                    {
+                        GameState++;
+                        return;
                     }
-
-
+                case 5: // 5 - сбор предмета
+                    {
+                        TouchCollectItem();
+                        GameState++;
+                        return;
+                    }
+                case 6: // 6 - переход к следующей точке
+                    {
+                        pointend();
+                        return;
+                    }
                 default:
                     break;
             }
-
-            if (GameState == 1) { }
-            Text.text = "Prishel";
-            // поиск плоскостей
-
-
-
-            //пока просто скопировал надо менять с видео на гифку.
-            VideoPoss = ArCamera.transform;
-            TouchCollectItem();
-
-            // Сюда спавн екатерины
-            ////
-            // Воспроизведение Гифки
-            // Воспроизведение Аудио
-            // Загадка
-
-
-            if (GameState == 3)
-            {
-                CurrentPos++;
-                GameState = 0;
-            }
-
         }
         void TouchCollectItem()
         {
