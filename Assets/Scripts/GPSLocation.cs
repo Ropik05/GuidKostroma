@@ -12,12 +12,12 @@ namespace Assets.Scripts
         // 1 - работает
         // -1 - Ошибка связи
         // -2 - превышено время ожидания
-        public int GPSStatus;
-        public float latitudeValue;
-        public float longitudeValue;
-        public float altitudeValue;
-        public float horizontalAccuracyValue;
-        public double timestampValue;
+        public static int GPSStatus;
+        public static float latitudeValue;
+        public static float longitudeValue;
+        public static float altitudeValue;
+        public static float horizontalAccuracyValue;
+        public static double timestampValue;
 
         // Start is called before the first frame update
         void Start()
