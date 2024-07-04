@@ -1,34 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
-public class DestroyObject : MonoBehaviour
+namespace Assets.Scripts
 {
-    public UnityEngine.Video.VideoPlayer player;
-
-    public GameObject CollectItem;
-    // Start is called before the first frame update
-    void Start()
+    public class DestroyObject : MonoBehaviour
     {
+        public UnityEngine.AudioSource m_MyAudioSource;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (player.frame > 0 && !player.isPlaying)
+        public GameObject CollectItem;
+        // Start is called before the first frame update
+        void Start()
         {
-            DollControl.GameMode++;
-            Instantiate(CollectItem, this.gameObject.transform.position + new Vector3(0,0,0.1f), DollControl.VideoPoss.rotation);
-            DoDestroy();
+            m_MyAudioSource = GetComponent<AudioSource>();
         }
-       this.gameObject.transform.LookAt(DollControl.VideoPoss.position);
-        
-    }
 
-    public void DoDestroy()
-    {
-        Destroy(this.gameObject);
+        // Update is called once per frame
+        void Update()
+        {
+
+            if (!m_MyAudioSource.isPlaying)
+            {
+                Quest.QuestR = true;
+                //Instantiate(CollectItem,this.gameObject.transform.position + new Vector3(0,0,0.2f), Quest.VideoPoss.rotation);
+                DoDestroy();
+            }
+           // this.gameObject.transform.LookAt(Quest.VideoPoss.position);
+
+        }
+
+        public void DoDestroy()
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

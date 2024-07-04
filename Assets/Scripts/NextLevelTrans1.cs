@@ -8,6 +8,22 @@ using UnityEngine.UIElements;
 
 public class NextLevelTrans : MonoBehaviour
 {
+    public void PrevScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    public void NextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void ToScene(int index)
+    {
+        SceneManager.LoadScene(index);
+    }
+    public void ToScene(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
     public void changeScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
