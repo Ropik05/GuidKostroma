@@ -27,7 +27,7 @@ namespace Assets.Scripts
 
         GameObject AudioPlayer;
         GameObject GifPlayer; //Нужен ли? мб один объект с одной анимацией а не вот это вот все
-        GPSLocation GPS;
+
 
         #region Координаты и карта
         // координаты наших мест
@@ -38,13 +38,14 @@ namespace Assets.Scripts
         //[40.92690099812203, 57.76790851789714]
         //[57.77031426849492, 40.93166896010112]
         //[57.76181661202863, 40.92877026474288]
-        GPSLocation GPS;
-        MapPoints map;
-        public List<QuestPoint> points;
+        public static List<QuestPoint> points;
 
         #endregion
-        public int CurrentPos = 0;
-        int GameState = 0;
+        public static int CurrentPos = 0;
+        // Значения:
+        // 0 - Начало квеста,проверка геолокации
+        // 1 - начало квеста, ищем плоскость
+        static int GameState = 0;
         bool forceStart = false;
         public void ForceStart() { forceStart = true; }
         void pointend()
@@ -58,9 +59,9 @@ namespace Assets.Scripts
         public bool CheckLocation(QuestPoint p, float e)
         {
             //Если gps не работает - возвращаем истину, чтоб квест работал. Статусы есть, но мне впадлу писать это сейчас
-            if (GPS.GPSStatus != 1) return true;
+            if (GPSLocation.GPSStatus != 1) return true;
 
-            return math.abs(p.latitudeValue - GPS.latitudeValue) < e && math.abs(p.longitudeValue - GPS.longitudeValue) < e;
+            return math.abs(p.latitudeValue - GPSLocation.latitudeValue) < e && math.abs(p.longitudeValue - GPSLocation.longitudeValue) < e;
         }
 
 
@@ -68,48 +69,79 @@ namespace Assets.Scripts
 
         void Start()
         {
+
+            points = new List<QuestPoint>() 
+            {
+                // координаты наших мест
+                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, Completed = true},
+                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f},
+                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f},
+                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f},
+                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f},
+                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f},
+                new QuestPoint() {latitudeValue = 57.76181661202863f, longitudeValue = 40.92877026474288f}
+            };
             Button.SetActive(false);
             PlaneMarker.SetActive(false);
             ARRaycastManagerScript = FindObjectOfType<ARRaycastManager>();
-            // Здесь надо инициализировать точки квеста в список
             Text.text = "Start";
             ForceStart();
         }
 
         // Update is called once per frame
+        List<ARRaycastHit> hits = new List<ARRaycastHit>();
         void Update()
         {
-           if ( CurrentPos >= points.Count)
+            if ( CurrentPos >= points.Count)
             {
                 //пока заглушка на конец надо править 
                 return;
             }
-            // Проверка геолокации
-           /* if (GameState == 0)
+            switch (GameState)
             {
-                if (!(CheckLocation(points[CurrentPos], 0.0001f) || forceStart)) return;
-            }*/
+                case 0: // 0 - Начало квеста,проверка геолокации
+                    {
+                    if (!(CheckLocation(points[CurrentPos], 0.0001f) || forceStart)) return;
+                    GameState++;
+                    return;
+                }
+                case 1: // 1 - ищем плоскость
+                    {
+                        ARRaycastManagerScript.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
+                        if (hits.Count > 0)
+                        {
+                            PlaneMarker.transform.position = hits[0].pose.position;
+                            PlaneMarker.SetActive(true);
+                            Button.SetActive(true);
+                            GameState++;
+                        }
+                        return;
+                    }
+                case 2: { return; } // 2 - Ждем пока не нажмут кнопку
+                case 3: // 3 - спавним видео, включаем реплику
+                    {
+                        GameVideo = Instantiate(VideoPlane, hits[0].pose.position, ARCamera.transform.rotation);
+                        hits.Clear();
+                        GameState++;
+                        return; 
+                    }
+                case 4: // 4 - загадка
+                    { 
+                        return; 
+                    }
+
+
+                default:
+                    break;
+            }
+
+            if (GameState == 1) { }
             Text.text = "Prishel";
             // поиск плоскостей
-            List<ARRaycastHit> hits = new List<ARRaycastHit>();
-            ARRaycastManagerScript.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
+
+
 
             //пока просто скопировал надо менять с видео на гифку.
-            if (hits.Count > 0)
-            {
-                PlaneMarker.transform.position = hits[0].pose.position;
-                PlaneMarker.SetActive(true);
-                if (GameState == 0)
-                {
-                    Button.SetActive(true);
-                }
-            }
-
-            if (GameState == 1)
-            {
-                GameVideo = Instantiate(VideoPlane, hits[0].pose.position, ARCamera.transform.rotation);
-                GameState = 2;
-            }
             VideoPoss = ArCamera.transform;
             TouchCollectItem();
 
@@ -118,10 +150,7 @@ namespace Assets.Scripts
             // Воспроизведение Гифки
             // Воспроизведение Аудио
             // Загадка
-            if (QuestR)
-            {
 
-            }
 
             if (GameState == 3)
             {
@@ -152,7 +181,7 @@ namespace Assets.Scripts
         }
         public void StartQuest()
         {
-            GameState = 1;
+            GameState = 3;
         }
     }
     public class QuestPoint

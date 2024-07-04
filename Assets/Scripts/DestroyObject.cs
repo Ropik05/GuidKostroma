@@ -23,8 +23,6 @@ namespace Assets.Scripts
 
             if (!m_MyAudioSource.isPlaying)
             {
-                Quest.QuestR = true;
-                //Instantiate(CollectItem,this.gameObject.transform.position + new Vector3(0,0,0.2f), Quest.VideoPoss.rotation);
                 DoDestroy();
             }
            // this.gameObject.transform.LookAt(Quest.VideoPoss.position);
