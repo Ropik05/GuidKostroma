@@ -43,11 +43,12 @@ namespace Assets.Scripts
         #endregion
         public GameObject qcanv;
         public GameObject mapcanv;
+        public GameObject checkcanv;
         public static int CurrentPos = 0;
         // Значения:
         // 0 - Начало квеста,проверка геолокации
         // 1 - начало квеста, ищем плоскость
-        public static int GameState = 1;
+        public static int GameState = 0;
         bool forceStart = false;
         public void ForceStart() 
         {
@@ -90,7 +91,6 @@ namespace Assets.Scripts
             Button.SetActive(false);
             PlaneMarker.SetActive(false);
             ARRaycastManagerScript = FindObjectOfType<ARRaycastManager>();
-            ForceStart();
         }
 
         // Update is called once per frame
@@ -108,8 +108,10 @@ namespace Assets.Scripts
                     {
                     if (CheckLocation(points[CurrentPos], 0.0001f) || forceStart)
                     {
-                        mapcanv.SetActive(false);
                         GameState = 1;
+                        mapcanv.SetActive(false);
+                        checkcanv.SetActive(true);
+                        
                     }
                     return;
                 }
@@ -118,31 +120,32 @@ namespace Assets.Scripts
                         ARRaycastManagerScript.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
                         if (hits.Count > 0)
                         {
+                            GameState = 2;
                             PlaneMarker.transform.position = hits[0].pose.position;
                             PlaneMarker.SetActive(true);
                             Button.SetActive(true);
-                            GameState = 2;
+                            
                         }
                         return;
                     }
                 case 2: { return; } // 2 - Ждем пока не нажмут кнопку
                 case 3: // 3 - спавним видео, включаем реплику
                     {
-                        GameVideo = Instantiate(VideoPlane[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation) as GameObject;
                         GameState = 4;
+                        GameVideo = Instantiate(VideoPlane[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation) as GameObject;
                         return; 
                     }
                 case 4: { return; }
                 case 5: // 4 - загадка
                     {
-                        mapcanv.SetActive(false);
                         qcanv.SetActive(true);
+                        mapcanv.SetActive(false);
                         return;
                     }
                 case 6: // 5 - сбор предмета
                     {
-                        Instantiate(CollectItem[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation);
                         GameState++;
+                        Instantiate(CollectItem[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation);
                         return;
                     }
                 case 7:
@@ -197,7 +200,7 @@ namespace Assets.Scripts
         public string RewardItemModelSource;
 
         public string Question;
-        public string[] Answers = new string[4] {"","1","","" };
+        public string[] Answers;
         public int CorrectIndex;
 
 
