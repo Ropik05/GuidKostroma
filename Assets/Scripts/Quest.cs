@@ -39,7 +39,7 @@ namespace Assets.Scripts
         //[57.77031426849492, 40.93166896010112]
         //[57.76181661202863, 40.92877026474288]
         public static List<QuestPoint> points;
-
+        public GameObject imherebtn;
         #endregion
         public static int CurrentPos = 0;
         // Значения:
@@ -47,14 +47,19 @@ namespace Assets.Scripts
         // 1 - начало квеста, ищем плоскость
         public static int GameState = 1;
         bool forceStart = false;
-        public void ForceStart() { forceStart = true; }
+        public void ForceStart() 
+        {
+            forceStart = true;
+        }
         void pointend()
         {
             //Переход к следующей точке квеста
             points[CurrentPos].Completed = true;
+            forceStart = false;
             CurrentPos++;
             GameState = 0;
             hits.Clear();
+            imherebtn.SetActive(true);
         }
 
         public bool CheckLocation(QuestPoint p, float e)
