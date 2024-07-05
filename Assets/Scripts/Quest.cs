@@ -41,6 +41,8 @@ namespace Assets.Scripts
         public static List<QuestPoint> points;
         public GameObject imherebtn;
         #endregion
+        public GameObject qcanv;
+        public GameObject mapcanv;
         public static int CurrentPos = 0;
         // Значения:
         // 0 - Начало квеста,проверка геолокации
@@ -75,17 +77,15 @@ namespace Assets.Scripts
 
         void Start()
         {
-
             points = new List<QuestPoint>() 
             {
                 // координаты наших мест
-                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, FrameSources = "Ekat1Sceen",RewardItemModelSource="Path1"},
-                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f,FrameSources= "Ekat2Sceen",RewardItemModelSource = "Path2"},
-                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f,FrameSources = "Ekat3Sceen",RewardItemModelSource = "Path3"},
-                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f,FrameSources = "Ekat4Sceen",RewardItemModelSource = "Path4"},
-                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f,FrameSources = "Ekat5Sceen",RewardItemModelSource = "Path5"},
-                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f,FrameSources = "Ekat6Sceen",RewardItemModelSource = "Path6"},
-                //new QuestPoint() {latitudeValue = 57.76181661202863f, longitudeValue = 40.92877026474288f}
+                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, FrameSources = "Ekat1Sceen",RewardItemModelSource="Path1",Question ="В каком году была основана Кострома?",Answers= new string[4] {"1150","1157","1152","982" },CorrectIndex=3},
+                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f,FrameSources= "Ekat2Sceen",RewardItemModelSource = "Path2",Question="Какие легенды существуют о подвиге Ивана Сусанина?",Answers= new string[4]{"завел поляк в болото","накормил царя","обокрал аттамана","ничего такого" },CorrectIndex=1 },
+                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f,FrameSources = "Ekat3Sceen",RewardItemModelSource = "Path3",Question = "В каком году начали производить Костромской сыр?",Answers= new string[4] {"1880","1878","1512","1412" },CorrectIndex=2},
+                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f,FrameSources = "Ekat4Sceen",RewardItemModelSource = "Path4",Question="Как называеться площадь в Костроме?",Answers= new string[4] {"Чугунок","Сотейник","Сковородка","Кружка" },CorrectIndex=3},
+                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f,FrameSources = "Ekat5Sceen",RewardItemModelSource = "Path5",Question="Какова высота пожарной каланчи?",Answers= new string[4] {"120","12","45","35" },CorrectIndex=4},
+                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f,FrameSources = "Ekat6Sceen",RewardItemModelSource = "Path6",Question="Какая известная пьесса Островского?",Answers = new string[4]{"Гроза","Любовь и голуби","Мастер и Маргарита","Вий" },CorrectIndex=1 },
             };
             Button.SetActive(false);
             PlaneMarker.SetActive(false);
@@ -106,8 +106,11 @@ namespace Assets.Scripts
             {
                 case 0: // 0 - Начало квеста,проверка геолокации
                     {
-                    if (!(CheckLocation(points[CurrentPos], 0.0001f) || forceStart)) return;
-                    GameState++;
+                    if (CheckLocation(points[CurrentPos], 0.0001f) || forceStart)
+                    {
+                        mapcanv.SetActive(false);
+                        GameState = 1;
+                    }
                     return;
                 }
                 case 1: // 1 - ищем плоскость
@@ -118,7 +121,7 @@ namespace Assets.Scripts
                             PlaneMarker.transform.position = hits[0].pose.position;
                             PlaneMarker.SetActive(true);
                             Button.SetActive(true);
-                            GameState++;
+                            GameState = 2;
                         }
                         return;
                     }
@@ -126,12 +129,14 @@ namespace Assets.Scripts
                 case 3: // 3 - спавним видео, включаем реплику
                     {
                         GameVideo = Instantiate(VideoPlane[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation) as GameObject;
-                        GameState++;
+                        GameState = 4;
                         return; 
                     }
                 case 4: { return; }
                 case 5: // 4 - загадка
                     {
+                        mapcanv.SetActive(false);
+                        qcanv.SetActive(true);
                         return;
                     }
                 case 6: // 5 - сбор предмета
