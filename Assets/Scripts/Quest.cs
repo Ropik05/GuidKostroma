@@ -127,7 +127,6 @@ namespace Assets.Scripts
                 case 4: { return; }
                 case 5: // 4 - загадка
                     {
-                        GameState++;
                         return;
                     }
                 case 6: // 5 - сбор предмета
