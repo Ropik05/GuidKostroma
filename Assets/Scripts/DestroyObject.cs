@@ -23,6 +23,7 @@ namespace Assets.Scripts
 
             if (!m_MyAudioSource.isPlaying)
             {
+                Quest.GameState++;
                 DoDestroy();
             }
            // this.gameObject.transform.LookAt(Quest.VideoPoss.position);

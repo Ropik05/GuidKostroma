@@ -19,8 +19,8 @@ namespace Assets.Scripts
         private ARRaycastManager ARRaycastManagerScript;
         public GameObject PlaneMarker;
         private Vector2 TouchPosition;
-        public GameObject VideoPlane;
-        public GameObject CollectItem;
+        public GameObject[] VideoPlane;
+        public GameObject[] CollectItem;
         private GameObject GameVideo;
         public static Transform VideoPoss;
         public Text Text;
@@ -45,7 +45,7 @@ namespace Assets.Scripts
         // Значения:
         // 0 - Начало квеста,проверка геолокации
         // 1 - начало квеста, ищем плоскость
-        static int GameState = 0;
+        public static int GameState = 1;
         bool forceStart = false;
         public void ForceStart() { forceStart = true; }
         void pointend()
@@ -54,6 +54,7 @@ namespace Assets.Scripts
             points[CurrentPos].Completed = true;
             CurrentPos++;
             GameState = 0;
+            hits.Clear();
         }
 
         public bool CheckLocation(QuestPoint p, float e)
@@ -73,18 +74,17 @@ namespace Assets.Scripts
             points = new List<QuestPoint>() 
             {
                 // координаты наших мест
-                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f,},
-                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f},
-                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f},
-                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f},
-                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f},
-                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f},
-                new QuestPoint() {latitudeValue = 57.76181661202863f, longitudeValue = 40.92877026474288f}
+                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, FrameSources = "Ekat1Sceen",RewardItemModelSource="Path1"},
+                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f,FrameSources= "Ekat2Sceen",RewardItemModelSource = "Path2"},
+                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f,FrameSources = "Ekat3Sceen",RewardItemModelSource = "Path3"},
+                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f,FrameSources = "Ekat4Sceen",RewardItemModelSource = "Path4"},
+                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f,FrameSources = "Ekat5Sceen",RewardItemModelSource = "Path5"},
+                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f,FrameSources = "Ekat6Sceen",RewardItemModelSource = "Path6"},
+                //new QuestPoint() {latitudeValue = 57.76181661202863f, longitudeValue = 40.92877026474288f}
             };
             Button.SetActive(false);
             PlaneMarker.SetActive(false);
             ARRaycastManagerScript = FindObjectOfType<ARRaycastManager>();
-            Text.text = "Start";
             ForceStart();
         }
 
@@ -120,23 +120,27 @@ namespace Assets.Scripts
                 case 2: { return; } // 2 - Ждем пока не нажмут кнопку
                 case 3: // 3 - спавним видео, включаем реплику
                     {
-                        GameVideo = Instantiate(VideoPlane, hits[0].pose.position, ARCamera.transform.rotation);
-                        hits.Clear();
+                        GameVideo = Instantiate(VideoPlane[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation) as GameObject;
                         GameState++;
                         return; 
                     }
-                case 4: // 4 - загадка
+                case 4: { return; }
+                case 5: // 4 - загадка
                     {
                         GameState++;
                         return;
                     }
-                case 5: // 5 - сбор предмета
+                case 6: // 5 - сбор предмета
+                    {
+                        Instantiate(CollectItem[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation);
+                        GameState++;
+                        return;
+                    }
+                case 7:
                     {
                         TouchCollectItem();
-                        GameState++;
-                        return;
-                    }
-                case 6: // 6 - переход к следующей точке
+                        return; }
+                case 8: // 6 - переход к следующей точке
                     {
                         pointend();
                         return;
@@ -179,11 +183,8 @@ namespace Assets.Scripts
         public float longitudeValue;
 
         //Список анимаций персонажа. скорее всего пути к ним или хз
-        public string[] FrameSources;
-
-        //Список звуковых дорожек, которые воспроизводятся
-        public string AudioSource;
-
+        public string FrameSources;
+        //Список собираемых частей
         public string RewardItemModelSource;
 
         public string Question;

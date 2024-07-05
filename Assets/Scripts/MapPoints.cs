@@ -37,7 +37,6 @@ namespace Assets.Scripts
                 double y = canvas.position[1];
                 drawedpoints[i].transform.localPosition = new Vector3((float)(1080 * X) - 540, (float)(1920 * Y) - 960, 0);
                 if (!chp[i].Completed) break;
-                i++;
             }
             d = false;
         }
