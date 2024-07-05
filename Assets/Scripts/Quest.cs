@@ -8,6 +8,7 @@ using UnityEngine.Video;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
@@ -81,12 +82,12 @@ namespace Assets.Scripts
             points = new List<QuestPoint>() 
             {
                 // координаты наших мест
-                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, FrameSources = "Ekat1Sceen",RewardItemModelSource="Path1",Question ="В каком году была основана Кострома?",Answers= new string[4] {"1150","1157","1152","982" },CorrectIndex=3},
-                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f,FrameSources= "Ekat2Sceen",RewardItemModelSource = "Path2",Question="Какие легенды существуют о подвиге Ивана Сусанина?",Answers= new string[4]{"завел поляк в болото","накормил царя","обокрал аттамана","ничего такого" },CorrectIndex=1 },
-                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f,FrameSources = "Ekat3Sceen",RewardItemModelSource = "Path3",Question = "В каком году начали производить Костромской сыр?",Answers= new string[4] {"1880","1878","1512","1412" },CorrectIndex=2},
-                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f,FrameSources = "Ekat4Sceen",RewardItemModelSource = "Path4",Question="Как называеться площадь в Костроме?",Answers= new string[4] {"Чугунок","Сотейник","Сковородка","Кружка" },CorrectIndex=3},
-                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f,FrameSources = "Ekat5Sceen",RewardItemModelSource = "Path5",Question="Какова высота пожарной каланчи?",Answers= new string[4] {"120","12","45","35" },CorrectIndex=4},
-                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f,FrameSources = "Ekat6Sceen",RewardItemModelSource = "Path6",Question="Какая известная пьесса Островского?",Answers = new string[4]{"Гроза","Любовь и голуби","Мастер и Маргарита","Вий" },CorrectIndex=1 },
+                new QuestPoint() {latitudeValue = 57.76462547805589f, longitudeValue = 40.92026989198701f, FrameSources = "Ekat1Sceen",RewardItemModelSource="Path1",Question ="В каком году была основана Кострома?",Answers= new string[4] {"1150","1157","1152","982" },CorrectIndex=2},
+                new QuestPoint() {latitudeValue = 57.76685013594274f, longitudeValue = 40.92462403838931f,FrameSources= "Ekat2Sceen",RewardItemModelSource = "Path2",Question="Какие легенды существуют о подвиге Ивана Сусанина?",Answers= new string[4]{"завел поляк в болото","накормил царя","обокрал аттамана","ничего такого" },CorrectIndex=0 },
+                new QuestPoint() {latitudeValue = 57.76749226711287f, longitudeValue = 40.92440946166813f,FrameSources = "Ekat3Sceen",RewardItemModelSource = "Path3",Question = "В каком году начали производить Костромской сыр?",Answers= new string[4] {"1880","1878","1512","1412" },CorrectIndex=1},
+                new QuestPoint() {longitudeValue = 40.9258495721882f, latitudeValue = 57.768562096370054f,FrameSources = "Ekat4Sceen",RewardItemModelSource = "Path4",Question="Как называеться площадь в Костроме?",Answers= new string[4] {"Чугунок","Сотейник","Сковородка","Кружка" },CorrectIndex=2},
+                new QuestPoint() {longitudeValue = 40.92690099812203f, latitudeValue = 57.76790851789714f,FrameSources = "Ekat5Sceen",RewardItemModelSource = "Path5",Question="Какова высота пожарной каланчи?",Answers= new string[4] {"120","12","45","35" },CorrectIndex=3},
+                new QuestPoint() {latitudeValue = 57.77031426849492f, longitudeValue = 40.93166896010112f,FrameSources = "Ekat6Sceen",RewardItemModelSource = "Path6",Question="Какая известная пьесса Островского?",Answers = new string[4]{"Гроза","Любовь и голуби","Мастер и Маргарита","Вий" },CorrectIndex=0 },
             };
             Button.SetActive(false);
             PlaneMarker.SetActive(false);
@@ -100,6 +101,7 @@ namespace Assets.Scripts
             if ( CurrentPos >= points.Count)
             {
                 //пока заглушка на конец надо править 
+                SceneManager.LoadScene(0);
                 return;
             }
             switch (GameState)
@@ -144,7 +146,7 @@ namespace Assets.Scripts
                     }
                 case 6: // 5 - сбор предмета
                     {
-                        GameState++;
+                        GameState = 7;
                         Instantiate(CollectItem[CurrentPos], hits[0].pose.position, ARCamera.transform.rotation);
                         return;
                     }

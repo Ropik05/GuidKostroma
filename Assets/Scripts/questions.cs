@@ -14,7 +14,8 @@ public class questions : MonoBehaviour
     public GameObject canv;
 
     // Start is called before the first frame update
-    void Start()
+
+    void Update()
     {
         Question.text = Quest.points[Quest.CurrentPos].Question;
         answ0.text = Quest.points[Quest.CurrentPos].Answers[0];
